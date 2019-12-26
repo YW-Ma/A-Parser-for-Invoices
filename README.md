@@ -21,6 +21,7 @@
 - there are seven samples of invoice in the file `invoice.samples.txt`
 - create a folder named Tables if you cannot find it in the folder Parser .
 - input `./invoice` in your terminal to parse all invoices. Three tables will be created, containing information of each customer, invoice and entry of invoice.
+- Attention, items in \*.tab file is divided by Tab. though they may appear to be irregualr in your editor, they will become cells of a table if you open it with Excel, Numbers, or Libra Office tool.
 
 # Meanings
 1. Work flow we supposed: 
