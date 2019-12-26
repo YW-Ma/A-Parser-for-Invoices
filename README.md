@@ -9,8 +9,26 @@
 
 # Usage
 1. Preparing your tools
-- install __Flex__ and __Bison__: input 'sudo apt-get install flex bison'
-- install __make__ if necessary: input 'sudo apt-get install make' (I have upload a Makefile for Ubuntu)
+- install __Flex__ and __Bison__: input `sudo apt-get install flex bison`
+- install __make__ if necessary: input `sudo apt-get install make` (I have upload a Makefile for Ubuntu)
 2. Downloading the source code
-- 'clone' this repository or simply download the zip file from this page.
--  
+- `clone` this repository or simply download the zip file from this page.
+-  open this repository in your terminal.
+3. Compiling
+- input `cd Parser` step into the folder of our parser.
+- input `make invoice` compile the parser.
+4. Test
+- there are seven samples of invoice in the file `invoice.samples.txt`
+- create a folder named Tables if you cannot find it in the folder Parser .
+- input `./invoice` in your terminal to parse all invoices. Three tables will be created, containing information of each customer, invoice and entry of invoice.
+
+# Meanings
+1. Work flow we supposed: 
+
+Invoices --(Scanner)--> image --(OCR)-->  textfile  --(Parser)--> tables in datebase;
+
+We focused on the work of Parser in this workflow.
+
+# Features
+1. providing specific error information telling where and what the error is.
+2. semantic checking for unit price and total price in invoices.
