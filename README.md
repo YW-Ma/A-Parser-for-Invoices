@@ -28,7 +28,7 @@
 
 _Invoices --(Scanner)--> images --(OCR)-->  textfiles  __--(Parser)-->__ tables in datebase_;
 
-We focused on the work of Parser in this workflow.
+We focused on the construction of Parser in this workflow.
 
 # Features
 1. providing specific error information telling where and what the error is.
