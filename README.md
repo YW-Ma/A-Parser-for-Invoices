@@ -3,7 +3,7 @@
 # Tutorial
 Thanks to the excellent [tutorial](https://aquamentus.com/flex_bison.html) privided by Chris verBurg!
 
-This tutorial explained _the functions of \*.y and \*.l files_ in details, and also provides useful instructions for _the usage of global variables and yyerror_.
+This tutorial explained __the functions of \*.y and \*.l files__ in details, and also provides useful instructions for __the usage of global variables and yyerror__.
 
 I strongly recommend a beginner of flex & bison to take a look at the [tutorial](https://aquamentus.com/flex_bison.html).
 
