@@ -25,7 +25,7 @@
 # Meanings
 1. Work flow we supposed: 
 
-Invoices --(Scanner)--> image --(OCR)-->  textfile  --(Parser)--> tables in datebase;
+_Invoices --(Scanner)--> image --(OCR)-->  textfile  __--(Parser)-->__ tables in datebase_;
 
 We focused on the work of Parser in this workflow.
 
