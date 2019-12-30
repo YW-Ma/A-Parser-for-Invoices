@@ -1,24 +1,24 @@
-ProductID	ProductName	Quantity	Unit Price	Amount
-1001	A Tale of Two Cities by Charles Dickens	1	6.99	6.99
-1002	Jane Eyre by Charlotte Bronte	1	7.89	7.89
-1003	Lord of the Files by William Golding	1	13.99	13.99
-1004	Adventures of Sherlock Holmes by Arthur Conan Doyle	1	20.99	20.99
-3001	Oxford English Dictionary	1	12.95	12.95
-1002	Jane Eyre by Charlotte Bronte	1	7.89	7.89
-1003	Lord of the Files by William Golding	2	13.99	27.98
-1004	Adventures of Sherlock Holmes by Arthur Conan Doyle	2	20.99	41.98
-2001	College Algebra	1	233.32	233.32
-2002	Elementary Geometry for College Students	1	102.71	102.71
-2003	College Physics	1	152.15	152.15
-3001	Oxford English Dictionary	1	12.95	12.95
-1001	A Tale of Two Cities by Charles Dickens	10	6.99	69.90
-1002	Jane Eyre by Charlotte Bronte	10	7.89	78.90
-1003	Lord of the Files by William Golding	10	13.99	139.90
-1004	Adventures of Sherlock Holmes by Arthur Conan Doyle	10	20.99	209.90
-2001	College Algebra	20	233.32	4666.40
-2002	Elementary Geometry for College Students	20	102.71	2054.20
-2003	College Physics	20	152.15	3043.00
-3001	Oxford English Dictionary	10	12.95	129.50
-3001	Oxford English Dictionary	100	12.95	1295.00
-1002	Jane Eyre by Charlotte Bronte	20	7.89	157.80
-1001	A Tale of Two Cities by Charles Dickens	20	6.99	139.80
+ProductID	ProductName	Quantity	Unit Price	Amount	InvoiceID
+1001	A Tale of Two Cities by Charles Dickens	1	6.99	6.99	ASIAN-1	
+1002	Jane Eyre by Charlotte Bronte	1	7.89	7.89	ASIAN-1	
+1003	Lord of the Files by William Golding	1	13.99	13.99	ASIAN-1	
+1004	Adventures of Sherlock Holmes by Arthur Conan Doyle	1	20.99	20.99	ASIAN-1	
+3001	Oxford English Dictionary	1	12.95	12.95	ASIAN-1	
+1002	Jane Eyre by Charlotte Bronte	1	7.89	7.89	ASIAN-2	
+1003	Lord of the Files by William Golding	2	13.99	27.98	ASIAN-2	
+1004	Adventures of Sherlock Holmes by Arthur Conan Doyle	2	20.99	41.98	ASIAN-2	
+2001	College Algebra	1	233.32	233.32	ASIAN-3	
+2002	Elementary Geometry for College Students	1	102.71	102.71	ASIAN-3	
+2003	College Physics	1	152.15	152.15	ASIAN-3	
+3001	Oxford English Dictionary	1	12.95	12.95	ASIAN-3	
+1001	A Tale of Two Cities by Charles Dickens	10	6.99	69.90	AMERICA-1	
+1002	Jane Eyre by Charlotte Bronte	10	7.89	78.90	AMERICA-1	
+1003	Lord of the Files by William Golding	10	13.99	139.90	AMERICA-1	
+1004	Adventures of Sherlock Holmes by Arthur Conan Doyle	10	20.99	209.90	AMERICA-1	
+2001	College Algebra	20	233.32	4666.40	AMERICA-1	
+2002	Elementary Geometry for College Students	20	102.71	2054.20	AMERICA-1	
+2003	College Physics	20	152.15	3043.00	AMERICA-1	
+3001	Oxford English Dictionary	10	12.95	129.50	AMERICA-1	
+3001	Oxford English Dictionary	100	12.95	1295.00	AMERICA-2	
+1002	Jane Eyre by Charlotte Bronte	20	7.89	157.80	AMERICA-3	
+1001	A Tale of Two Cities by Charles Dickens	20	6.99	139.80	AMERICA-4	

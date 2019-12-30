@@ -185,7 +185,9 @@ Entries:
 Entry:
   INT TABLE STRING TABLE INT TABLE FLOAT TABLE FLOAT ENDLS 
   {
-    fprintf(FItems,"%d\t%s\t%d\t%.2lf\t%.2lf\n",$1,$3,$5,$7,$9);
+    char tInvoiceID[128]={0};
+    sprintf(tInvoiceID,"%s-%d\t",INV_ID_AREA,INV_ID_NUMBER);
+    fprintf(FItems,"%d\t%s\t%d\t%.2lf\t%.2lf\t%s\n",$1,$3,$5,$7,$9,tInvoiceID);
     //Check: Unit Price * Quantity = Amount
     if((($5*$7-$9)<-0.001)||(($5*$7-$9)>0.001))
     {
@@ -252,7 +254,7 @@ int main(int, char**) {
   }
   fprintf(FCustomer,"CustomerID\tCustomerName\tRoadNumber\tRoad\tCity\tCountry\tPhone\n");
   fprintf(FInvoice,"InvoiceID\tCustomerID\tBusinessName\tIssueDate\tOrderNumber\tDueDate\tTerm\tSubtotal\tVAT\tTOTAL\n");
-  fprintf(FItems,"ProductID\tProductName\tQuantity\tUnit Price\tAmount\n");
+  fprintf(FItems,"ProductID\tProductName\tQuantity\tUnit Price\tAmount\tInvoiceID\n");
   // set lex to read from it instead of defaulting to STDIN:
   yyin = myfile;
 

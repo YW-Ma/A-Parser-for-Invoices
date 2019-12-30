@@ -1,10 +1,6 @@
-invoice.tab.c invoice.tab.h: invoice.y
-	bison -d invoice.y
-
-lex.yy.c: invoice.l invoice.tab.h
+invoice:
 	flex invoice.l
-
-invoice: lex.yy.c invoice.tab.c invoice.tab.h
+	bison -d invoice.y
 	g++ invoice.tab.c lex.yy.c -o invoice
 clean: 
 	rm -f invoice \
