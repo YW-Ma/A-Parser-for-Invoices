@@ -66,11 +66,15 @@
 %token <sval> STRING
 
 %%
+//3. Definition of Production Rules
+
+//All Invoices
 invoice:
   invoice Header OrderContent Footer
   | Header OrderContent Footer
   ;
 
+//Part 1: Header
 Header: 
   INVOICE ENDLS BussinessName CustomerInfo InvoiceInfo;
 BussinessName: 
@@ -170,7 +174,7 @@ Term:
     fprintf(FInvoice,"Net - %2d\t",INV_TERM_TYPE);
   };
 
-
+//Part 2: Entries of this order
 OrderContent: 
   EntryHeader Entries;
 EntryHeader:
@@ -193,7 +197,7 @@ Entry:
     free($3);
   };
 
-
+//Part 3: Footer
 Footer:
   Subtotal Tax Total{
     cout << "done with No."<< invoice_counter <<" invoice file to "<< CUSTOMER_NAME << endl;
@@ -220,19 +224,23 @@ Total:
     float diff = (INV_SUBTOTAL+INV_VAT)-INV_TOTAL;
     if(diff<-0.01||diff>0.01) printf("Warning: Invalid Total Price in No.%d Invoice.\n",invoice_counter);
   };
+
+//Endline
 ENDLS:
   ENDLS ENDL
   | ENDL ;
 %%
 
 int main(int, char**) {
-  // open a file handle to a particular file:
-  FILE *myfile = fopen("invoice.samples.txt", "r");
+  //1.FILE I/O
+  //1.2 Open the file containing all invoices
+  FILE *FSamples = fopen("invoice.samples.txt", "r");
+  //1.2 Create tables for loading results
   FCustomer=fopen("Tables//Customer_Info.tab","w");
   FInvoice=fopen("Tables//Invoice_Info.tab","w");
   FItems=fopen("Tables//Items.tab","w");
-  // make sure it's valid:
-  if (!myfile) {
+  //1.3 Make sure all files are valid
+  if (!FSamples) {
     cout << "I can't open invoice.samples.txt!" << endl;
     return -1;
   }
@@ -248,14 +256,14 @@ int main(int, char**) {
     cout << "I can't open FItems!" << endl;
     return -1;
   }
+  //1.4 Write Table Headers
   fprintf(FCustomer,"CustomerID\tCustomerName\tRoadNumber\tRoad\tCity\tCountry\tPhone\n");
   fprintf(FInvoice,"InvoiceID\tCustomerID\tBusinessName\tIssueDate\tOrderNumber\tDueDate\tTerm\tSubtotal\tVAT\tTOTAL\n");
   fprintf(FItems,"ProductID\tProductName\tQuantity\tUnit Price\tAmount\tInvoiceID\n");
-  // set lex to read from it instead of defaulting to STDIN:
-  yyin = myfile;
+  //1.5 Set Flex to read from invoice samples instead of defaulting to STDIN:
+  yyin = FSamples;
 
-  // parse through the input until there is no more:
-
+  //2. Parse through the input until there is no more:
   do {
     yyparse();
   } while (!feof(yyin));
@@ -264,8 +272,8 @@ int main(int, char**) {
   fclose(FItems);
 }
 
+// Error Processing
 void yyerror(const char *s) {
   cout << "Parse error on line " << line_num << "!  Message: " << s << endl;
-  // might as well halt now:
   exit(-1);
 }
