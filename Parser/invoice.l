@@ -4,13 +4,13 @@
   int line_num = 1;
   int invoice_counter = 0;
   int CUSTOMER_COUNTER = 0;
-  // global variables:
-  // bussiness name:
+  // Global Variables:
+  //    Bussiness name:
   char BUSSINESS_NAME[128];
   FILE *FCustomer;
   FILE *FInvoice;
   FILE *FItems;
-  // Customer Information global variables:
+  //    Customer Information global variables:
   bool in_the_list;
   int CUSTOMER_ID;
   int CUSTOMER_ID_LIST[128]={0};
@@ -20,7 +20,7 @@
   char CUSTOMER_CITY[128];
   char CUSTOMER_COUNTRY[128];
   int CUSTOMER_PHONE;
-  // Invoice Information global variables:
+  //    Invoice Information global variables:
   char INV_ID_AREA[48];
   int INV_ID_NUMBER;
   int INV_ISSUE_DD;

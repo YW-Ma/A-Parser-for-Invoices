@@ -3,19 +3,21 @@
   #include <iostream>
   using namespace std;
 
-  // stuff from flex that bison needs to know about:
+  // 1. Functions and Variables from Flex
+  // 1.1 Functions
   int yylex();
   int yyparse();
+  void yyerror(const char *s);
+  // 1.2 Variables
   extern FILE *yyin;
   extern FILE *FCustomer;
   extern FILE *FInvoice;
   extern FILE *FItems;
   extern int line_num;
   extern int invoice_counter;
-  // global variables:
-  // bussiness name:
+  //  (1) Bussiness name:
   extern char BUSSINESS_NAME[128];
-  // Customer Information global variables:
+  //  (2) Customer Information global variables:
   extern bool in_the_list;
   extern int CUSTOMER_ID;
   extern int CUSTOMER_ID_LIST[128];
@@ -26,7 +28,7 @@
   extern char CUSTOMER_CITY[128];
   extern char CUSTOMER_COUNTRY[128];
   extern int CUSTOMER_PHONE;
-  // Invoice Information global variables:
+  //  (3) Invoice Information global variables:
   extern char INV_ID_AREA[48];
   extern int INV_ID_NUMBER;
   extern int INV_ISSUE_DD;
@@ -41,39 +43,33 @@
   extern float INV_SUBTOTAL;
   extern float INV_VAT;
   extern float INV_TOTAL;
-  // Amounts for total price
+  //  (4) Amounts for total price
   extern int PRODUCT_AMOUNT;
-  void yyerror(const char *s);
+
 %}
-
-%union {
-  int ival;
-  float fval;
-  char *sval;
-}
-
-// define the constant-string tokens:
+//2. Define tokens
+//2.2 define the constant-string tokens:
 %token INVOICE TO
 %token INVOICE_NUM DATE ORDER_NUM DUE TERM NET
 %token ID DESCRIPTION QTY UNIT_PRICE AMOUNT
 %token TABLE DASH
 %token SUBTOTAL VAT TOTAL
 %token ENDL
-
-// define the "terminal symbol" token types I'm going to use (in CAPS
-// by convention), and associate each with a field of the union:
+//2.2define the "terminal symbol" tokens
+%union {
+  int ival;
+  float fval;
+  char *sval;
+}
 %token <ival> INT
 %token <fval> FLOAT
 %token <sval> STRING
 
 %%
-// the first rule defined is the highest-level rule, which in our
-// case is just the concept of a whole "invoice file":
 invoice:
   invoice Header OrderContent Footer
   | Header OrderContent Footer
   ;
-
 
 Header: 
   INVOICE ENDLS BussinessName CustomerInfo InvoiceInfo;
