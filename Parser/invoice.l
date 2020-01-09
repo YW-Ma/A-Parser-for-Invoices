@@ -1,6 +1,7 @@
-%option noyywrap
+%option noyywrap 
 %{
-  #include "invoice.tab.h"
+  // ^  noyywarp : supposes we only parse one file.
+  #include "invoice.tab.h" // to get the token types from Bison
   int line_num = 1;
   int invoice_counter = 0;
   int CUSTOMER_COUNTER = 0;

@@ -1,13 +1,15 @@
 %{
   #include <cstdio>
   #include <iostream>
+  #include <ctime>
   using namespace std;
 
   // 1. Functions and Variables from Flex
   // 1.1 Functions
-  int yylex();
-  int yyparse();
-  void yyerror(const char *s);
+   // Declare stuff from Flex that Bison needs to know about:
+  extern int yylex();
+  extern int yyparse();
+  extern void yyerror(const char *s);
   // 1.2 Variables
   extern FILE *yyin;
   extern FILE *FCustomer;
@@ -55,7 +57,7 @@
 %token TABLE DASH
 %token SUBTOTAL VAT TOTAL
 %token ENDL
-//2.2define the "terminal symbol" tokens
+//2.2 define tokens for int, float, string
 %union {
   int ival;
   float fval;
@@ -70,8 +72,8 @@
 
 //All Invoices
 invoice:
-  invoice Header OrderContent Footer
-  | Header OrderContent Footer
+  invoice Header Body Footer
+  | Header Body Footer
   ;
 
 //Part 1: Header
@@ -117,6 +119,7 @@ Country:
     sprintf(CUSTOMER_COUNTRY,"%s",$1);
     free($1);
   };
+//Phone number in USA has 8 digits. (therefore it can be stored within an integer)
 Phone: 
   INT ENDLS
   {
@@ -168,6 +171,8 @@ DueDate:
     INV_DUE_YYYY=$7;
     fprintf(FInvoice,"%02d-%02d-%04d\t",INV_DUE_DD,INV_DUE_MM,INV_DUE_YYYY);
   };
+//Term refers to the Terms of payment
+//for example - Net-15 means "the net amount is expected to be paid in full by the buyer within 15 days"
 Term:
   TERM TABLE NET INT ENDLS{
     INV_TERM_TYPE=$4;
@@ -175,7 +180,7 @@ Term:
   };
 
 //Part 2: Entries of this order
-OrderContent: 
+Body: 
   EntryHeader Entries;
 EntryHeader:
   ID TABLE DESCRIPTION TABLE QTY TABLE UNIT_PRICE TABLE AMOUNT ENDLS ;
@@ -188,10 +193,10 @@ Entry:
     char tInvoiceID[128]={0};
     sprintf(tInvoiceID,"%s-%d\t",INV_ID_AREA,INV_ID_NUMBER);
     fprintf(FItems,"%d\t%s\t%d\t%.2lf\t%.2lf\t%s\n",$1,$3,$5,$7,$9,tInvoiceID);
-    //Check: Unit Price * Quantity = Amount
+    //Semantic Check: Unit Price * Quantity = Amount
     if((($5*$7-$9)<-0.001)||(($5*$7-$9)>0.001))
     {
-      printf("Warning: Amount Price in the No.%d Invoice is incorrect.\nIncorrect Product Name:%s\n",invoice_counter,$3);
+      printf("[Warning]: Amount Price in the No.%d Invoice is incorrect. Incorrect Product Name:%s\n",invoice_counter,$3);
     }
     PRODUCT_AMOUNT+=$9;
     free($3);
@@ -200,29 +205,33 @@ Entry:
 //Part 3: Footer
 Footer:
   Subtotal Tax Total{
-    cout << "done with No."<< invoice_counter <<" invoice file to "<< CUSTOMER_NAME << endl;
+    cout << "[Done] with No."<< invoice_counter <<" invoice file to "<< CUSTOMER_NAME << endl;
+    cout << "-------------------------------" <<endl;
   };
 Subtotal:
   SUBTOTAL TABLE FLOAT ENDLS
   {
     INV_SUBTOTAL=$3;
     fprintf(FInvoice,"%.2lf\t",INV_SUBTOTAL);
-    //Check:      The sum of amounts of items = Subtotal
+    //Semantic Check: The sum of amounts of items = Subtotal
   };
 Tax:
   VAT TABLE FLOAT ENDLS
   {
     INV_VAT=$3;
     fprintf(FInvoice,"%.2lf\t",INV_VAT);
+    float diff = (INV_SUBTOTAL*0.05)-INV_VAT;
+    if(diff<-0.01||diff>0.01) printf("[Warning]: Tax amount(with rate 5%) in No.%d Invoice is incorrect. Tax should be %.2lf.\n",invoice_counter,INV_SUBTOTAL*0.05);
   };
 Total:
   TOTAL TABLE FLOAT ENDLS
   {
     INV_TOTAL=$3;
     fprintf(FInvoice,"%.2lf\n",INV_TOTAL);
-    //Check:      subtotal + vat = total
+    //Semantic Check:  subtotal + vat = total
     float diff = (INV_SUBTOTAL+INV_VAT)-INV_TOTAL;
-    if(diff<-0.01||diff>0.01) printf("Warning: Invalid Total Price in No.%d Invoice.\n",invoice_counter);
+    float total_price = (INV_SUBTOTAL+INV_VAT);
+    if(diff<-0.01||diff>0.01) printf("[Warning]: Invalid Total Price in No.%d Invoice. Total price should be %.2lf.\n",invoice_counter,total_price);
   };
 
 //Endline
@@ -232,16 +241,22 @@ ENDLS:
 %%
 
 int main(int, char**) {
+  // timer
+  //clock_t start,end;
+  // instruction: 
+  cout << "This is a parser for invoices. \nPlease enter invoice file: ";\
+  char InvoiceFile[128]={0};
+  cin >> InvoiceFile;
   //1.FILE I/O
   //1.2 Open the file containing all invoices
-  FILE *FSamples = fopen("invoice.samples.txt", "r");
+  FILE *FSamples = fopen(InvoiceFile, "r");
   //1.2 Create tables for loading results
   FCustomer=fopen("Tables//Customer_Info.tab","w");
   FInvoice=fopen("Tables//Invoice_Info.tab","w");
   FItems=fopen("Tables//Items.tab","w");
   //1.3 Make sure all files are valid
   if (!FSamples) {
-    cout << "I can't open invoice.samples.txt!" << endl;
+    cout << "I can't open" << InvoiceFile << endl;
     return -1;
   }
   if (!FCustomer) {
@@ -264,9 +279,13 @@ int main(int, char**) {
   yyin = FSamples;
 
   //2. Parse through the input until there is no more:
+//  start = clock();        
   do {
     yyparse();
   } while (!feof(yyin));
+//  end = clock();
+//  double endtime=(double)(end-start)/CLOCKS_PER_SEC;     //uncomment to count time
+//  cout << "total time:" << endtime << "ms" <<endl;
   fclose(FCustomer);
   fclose(FInvoice);
   fclose(FItems);
@@ -274,6 +293,6 @@ int main(int, char**) {
 
 // Error Processing
 void yyerror(const char *s) {
-  cout << "Parse error on line " << line_num << "!  Message: " << s << endl;
+  cout << "[Error] parser error on line " << line_num << "! " << s << endl;
   exit(-1);
 }
