@@ -155,6 +155,8 @@ IssueDate:
     INV_ISSUE_DD=$3;
     INV_ISSUE_MM=$5;
     INV_ISSUE_YYYY=$7;
+    //check
+    if($7>2020) printf("[Warning] Invalid IssueDate %d of No.%d Invoice.\n",$7,invoice_counter);
     fprintf(FInvoice,"%02d-%02d-%04d\t",INV_ISSUE_DD,INV_ISSUE_MM,INV_ISSUE_YYYY);
   };
 OrderNumber:
@@ -169,6 +171,8 @@ DueDate:
     INV_DUE_DD=$3;
     INV_DUE_MM=$5;
     INV_DUE_YYYY=$7;
+    //check
+    if($7>2020) printf("[Warning] Invalid DueDate %d of No.%d Invoice.\n",$7,invoice_counter);
     fprintf(FInvoice,"%02d-%02d-%04d\t",INV_DUE_DD,INV_DUE_MM,INV_DUE_YYYY);
   };
 //Term refers to the Terms of payment
